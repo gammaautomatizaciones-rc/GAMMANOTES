@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anotador de Tareas Profesionales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <nav id="sidebar">
+            <div id="sidebar-header">
+                <h1>📝 Anotador de Tareas Profesionales</h1>
+                <div id="global-actions">
+                    <div class="button-row">
+                        <button onclick="exportData()">Exportar</button>
+                        <button onclick="navigator.clipboard.writeText(exportToJSON()).then(() => alert('JSON copiado al portapapeles'))">Copiar JSON</button>
+                        <button onclick="document.getElementById('import-input').click()">Importar Archivo</button>
+                    </div>
+                    <div class="import-row">
+                        <textarea id="json-textarea" placeholder="Pega el JSON aquí para importar"></textarea>
+                        <button onclick="importFromJSON(document.getElementById('json-textarea').value)">Importar Texto</button>
+                    </div>
+                </div>
+            </div>
+            <div id="sidebar-content">
+                <form id="add-category-form">
+                    <div id="add-category-sidebar">
+                        <input type="text" id="category-input" placeholder="Nueva categoría" onkeydown="if(event.key==='Enter'){event.preventDefault(); document.getElementById('add-category-form').dispatchEvent(new Event('submit'));}">
+                        <button type="submit">➕</button>
+                    </div>
+                </form>
+                <ul id="category-list"></ul>
+            </div>
+        </nav>
+        <main id="main-content">
+            <div id="stats"></div>
+            <div id="search-filter">
+                <input type="text" id="search-input" placeholder="Buscar tareas...">
+                <select id="filter-select">
+                    <option value="all">Todas las tareas</option>
+                    <option value="Pendiente">Pendientes</option>
+                    <option value="En Progreso">En Progreso</option>
+                    <option value="Completada">Completadas</option>
+                </select>
+            </div>
+            <input type="file" id="import-input" accept=".json" style="display: none;">
+            <div id="category-content">
+                <p>Selecciona una categoría del sidebar para ver sus tareas.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Contraseña -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <h2>🔒 Acceso Restringido</h2>
+            <p>Ingresa la contraseña para continuar:</p>
+            <input type="password" id="password-input" placeholder="Contraseña">
+            <button id="password-submit">Acceder</button>
+            <p id="password-error" style="color: red; display: none;">Contraseña incorrecta. Inténtalo de nuevo.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
