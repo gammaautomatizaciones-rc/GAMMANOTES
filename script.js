@@ -18,7 +18,7 @@ function logLocalStorage() {
 
 document.addEventListener('DOMContentLoaded', function() {
     logLocalStorage();
-    if (localStorage.getItem('accessGranted') === 'true') {
+    if (localStorage.getItem('AG_accessGranted') === 'true') {
         loadData();
         document.getElementById('add-category-form').addEventListener('submit', addCategory);
         document.getElementById('search-input').addEventListener('input', updateSearch);
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     submitBtn.addEventListener('click', function() {
         const password = input.value.toLowerCase().trim();
         if (password === 'gamma2026') {
-            localStorage.setItem('accessGranted', 'true');
+            localStorage.setItem('AG_accessGranted', 'true');
             logLocalStorage();
             modal.style.display = 'none';
             loadData();
@@ -60,14 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadData() {
-    const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+    const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
     renderSidebar(data.categories);
     renderMain(data.categories);
     renderStats(data.categories);
 }
 
 function saveData(data) {
-    localStorage.setItem('tasks', JSON.stringify(data));
+    localStorage.setItem('AG_tasks', JSON.stringify(data));
     logLocalStorage();
 }
 
@@ -76,7 +76,7 @@ function addCategory(event) {
     const input = document.getElementById('category-input');
     const name = input.value.trim().toUpperCase();
     if (name) {
-        const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+        const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
         data.categories.push({ name: name, tasks: [] });
         saveData(data);
         currentCategoryIndex = data.categories.length - 1;
@@ -92,7 +92,7 @@ function addTask(categoryIndex) {
     const input = document.querySelector('.task-input');
     const text = input.value.trim().toUpperCase();
     if (text) {
-        const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+        const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
         data.categories[categoryIndex].tasks.push({ text: text, status: 'Pendiente' });
         saveData(data);
         renderSidebar(data.categories);
@@ -107,7 +107,7 @@ function addTask(categoryIndex) {
 }
 
 function changeStatus(categoryIndex, taskIndex, status) {
-    const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+    const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
     data.categories[categoryIndex].tasks[taskIndex].status = status;
     saveData(data);
     renderSidebar(data.categories);
@@ -117,7 +117,7 @@ function changeStatus(categoryIndex, taskIndex, status) {
 
 function deleteCategory(index) {
     if (confirm('¿Eliminar esta categoría y todas sus tareas?')) {
-        const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+        const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
         data.categories.splice(index, 1);
         if (currentCategoryIndex === index) currentCategoryIndex = null;
         else if (currentCategoryIndex > index) currentCategoryIndex--;
@@ -129,7 +129,7 @@ function deleteCategory(index) {
 }
 
 function deleteTask(categoryIndex, taskIndex) {
-    const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+    const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
     data.categories[categoryIndex].tasks.splice(taskIndex, 1);
     saveData(data);
     renderSidebar(data.categories);
@@ -144,13 +144,13 @@ function toggleCategory(index) {
 
 function updateSearch() {
     currentSearch = document.getElementById('search-input').value.toLowerCase();
-    const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+    const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
     renderMain(data.categories);
 }
 
 function updateFilter() {
     currentFilter = document.getElementById('filter-select').value;
-    const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+    const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
     renderMain(data.categories);
 }
 
@@ -163,7 +163,7 @@ function editTaskEl(el, categoryIndex, taskIndex) {
 }
 
 function clearCompleted() {
-    const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+    const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
     data.categories.forEach(cat => {
         cat.tasks = cat.tasks.filter(task => task.status !== 'Completada');
     });
@@ -174,7 +174,7 @@ function clearCompleted() {
 }
 
 function exportData() {
-    const data = localStorage.getItem('tasks') || '{"categories":[]}';
+    const data = localStorage.getItem('AG_tasks') || '{"categories":[]}';
     const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -185,13 +185,13 @@ function exportData() {
 }
 
 function exportToJSON() {
-    return localStorage.getItem('tasks') || '{"categories":[]}';
+    return localStorage.getItem('AG_tasks') || '{"categories":[]}';
 }
 
 function importFromJSON(json) {
     try {
         const data = JSON.parse(json);
-        localStorage.setItem('tasks', JSON.stringify(data));
+        localStorage.setItem('AG_tasks', JSON.stringify(data));
         currentCategoryIndex = null;
         renderSidebar(data.categories);
         renderMain(data.categories);
@@ -209,7 +209,7 @@ function importData(event) {
         reader.onload = function(e) {
             try {
                 const data = JSON.parse(e.target.result);
-                localStorage.setItem('tasks', JSON.stringify(data));
+                localStorage.setItem('AG_tasks', JSON.stringify(data));
                 currentCategoryIndex = null;
                 renderSidebar(data.categories);
                 renderMain(data.categories);
@@ -312,7 +312,7 @@ function renderMain(categories) {
 
 function selectCategory(index) {
     currentCategoryIndex = index;
-    const data = JSON.parse(localStorage.getItem('tasks')) || { categories: [] };
+    const data = JSON.parse(localStorage.getItem('AG_tasks')) || { categories: [] };
     renderSidebar(data.categories);
     renderMain(data.categories);
 }
