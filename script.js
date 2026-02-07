@@ -18,45 +18,12 @@ function logLocalStorage() {
 
 document.addEventListener('DOMContentLoaded', function() {
     logLocalStorage();
-    if (localStorage.getItem('AG_accessGranted') === 'true') {
-        loadData();
-        document.getElementById('add-category-form').addEventListener('submit', addCategory);
-        document.getElementById('search-input').addEventListener('input', updateSearch);
-        document.getElementById('filter-select').addEventListener('change', updateFilter);
-        document.getElementById('import-input').addEventListener('change', importData);
-        return;
-    }
-
-    const modal = document.getElementById('password-modal');
-    const input = document.getElementById('password-input');
-    const submitBtn = document.getElementById('password-submit');
-    const errorMsg = document.getElementById('password-error');
-
-    modal.style.display = 'flex';
-
-    submitBtn.addEventListener('click', function() {
-        const password = input.value.toLowerCase().trim();
-        if (password === 'gamma2026') {
-            localStorage.setItem('AG_accessGranted', 'true');
-            logLocalStorage();
-            modal.style.display = 'none';
-            loadData();
-            document.getElementById('add-category-form').addEventListener('submit', addCategory);
-            document.getElementById('search-input').addEventListener('input', updateSearch);
-            document.getElementById('filter-select').addEventListener('change', updateFilter);
-            document.getElementById('import-input').addEventListener('change', importData);
-        } else {
-            errorMsg.style.display = 'block';
-            input.value = '';
-            input.focus();
-        }
-    });
-
-    input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            submitBtn.click();
-        }
-    });
+    localStorage.setItem('AG_accessGranted', 'true');
+    loadData();
+    document.getElementById('add-category-form').addEventListener('submit', addCategory);
+    document.getElementById('search-input').addEventListener('input', updateSearch);
+    document.getElementById('filter-select').addEventListener('change', updateFilter);
+    document.getElementById('import-input').addEventListener('change', importData);
 });
 
 function loadData() {
